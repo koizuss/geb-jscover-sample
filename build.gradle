@@ -1,0 +1,63 @@
+apply plugin: 'groovy'
+apply plugin: 'jetty'
+
+ext {
+    chromeDriver = file('tools/chromedriver/chromedriver')
+}
+
+/**
+ * Repositories
+ * @see http://www.gradle.org/docs/current/userguide/userguide_single.html#sec:repositories
+ */
+repositories {
+    mavenCentral()
+}
+
+/**
+ * Declare dependencies
+ * @see http://www.gradle.org/docs/current/userguide/userguide_single.html#sec:how_to_declare_your_dependencies
+ */
+dependencies {
+    def gebVersion = '0.7.2'
+    def seleniumVersion = '2.30.0'
+    testCompile 'org.spockframework:spock-core:0.6-groovy-1.8',
+                "org.codehaus.geb:geb-spock:$gebVersion",
+                "org.codehaus.geb:geb-junit4:$gebVersion",
+                "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+
+    groovy 'org.codehaus.groovy:groovy-all:1.8.5'   // gebにあわせる
+}
+
+task setupChromeDriver << {
+    ext {
+        src = 'https://chromedriver.googlecode.com/files/chromedriver2_mac32_0.9.zip'
+        dest = file(chromeDriver.parent + '/archives')
+        zipfile = new File(dest.path, src.split('/')[-1])
+    }
+
+    if(!dest.exists()) assert dest.mkdirs(), "mkdir failed [$dest]"
+    if(!zipfile.exists()) ant.get(src: src, dest: dest, verbose: true)
+    assert zipfile.exists(), "download failed [$src]"
+
+    copy {
+        from zipTree(zipfile)
+        into chromeDriver.parent
+    }.execute()
+}
+
+task setup(dependsOn: setupChromeDriver)
+
+stopPort = 8099
+stopKey = 'stopKey'
+test {
+    doFirst {
+        systemProperty 'webdriver.chrome.driver', chromeDriver
+
+        jettyRun.daemon = true
+        jettyRun.execute()
+    }
+
+    doLast {
+        jettyStop.execute()
+    }
+}
