@@ -17,7 +17,7 @@ Geb SpecのカバレッジをJSCoverで取得してみる
 
 2. start jscover
   <pre>
-  java -jar tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar -ws --proxy --port=9999 --report-dir=report --document-root=../src/main/webapp/
+  java -jar tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar -ws --proxy --port=9999 --report-dir=report
   </pre>
 
 3. start target web server
@@ -28,7 +28,7 @@ Geb SpecのカバレッジをJSCoverで取得してみる
 
 4. setting proxy
 
-    setting http proxy on your browser: *http://localhost:9999*
+    setting proxy on your browser: *http://localhost:9999*
 
 5. open target page
 
