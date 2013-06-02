@@ -4,7 +4,7 @@ import org.openqa.selenium.JavascriptExecutor
 class SampleSpec extends GebSpec {
 
     def setup() {
-        go 'http://127.0.0.1/geb-jscover-sample/index.html'
+        go 'http://127.0.0.1:8080/geb-jscover-sample/index.html'
     }
 
     def "初期表示"() {
@@ -25,5 +25,9 @@ class SampleSpec extends GebSpec {
                 'hoge',
                 'hello'
             ]
+    }
+
+    def cleanupSpec() {
+        js.jscoverage_report('.')
     }
 }

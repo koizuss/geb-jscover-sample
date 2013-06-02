@@ -2,3 +2,4 @@
 build/
 tools/chromedriver
 report/
+*.log

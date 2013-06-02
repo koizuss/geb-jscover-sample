@@ -31,7 +31,8 @@ dependencies {
 
 task setupChromeDriver << {
     ext {
-        src = 'https://chromedriver.googlecode.com/files/chromedriver2_mac32_0.9.zip'
+        // src = 'https://chromedriver.googlecode.com/files/chromedriver2_mac32_0.9.zip'
+        src = 'https://chromedriver.googlecode.com/files/chromedriver_mac_26.0.1383.0.zip'
         dest = file(chromeDriver.parent + '/archives')
         zipfile = new File(dest.path, src.split('/')[-1])
     }
