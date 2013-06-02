@@ -11,7 +11,7 @@ Geb Specで実行されるJavaScriptのカバレッジをJSCoverで取得して�
   <pre>
   ./gradlew clean test
   </pre>
-  - download & setup chromedriver when first
+  - download & setup chromedriver/jscover when first
 
 2. show coverage
   1. カバレッジを表示する為に *--allow-file-access-from-files* オプションが必要
@@ -25,4 +25,3 @@ Geb Specで実行されるJavaScriptのカバレッジをJSCoverで取得して�
 ## TODO
 
 - 複数テストの結果が集約出来るか確認
-- setup jscover on gradle

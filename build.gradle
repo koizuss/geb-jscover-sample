@@ -4,6 +4,7 @@ apply plugin: 'jetty'
 ext {
     chromeDriver = file('tools/chromedriver/chromedriver')
     jscoverPort = 9999
+    jscoverJar = file('tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar')
 }
 
 /**
@@ -51,17 +52,19 @@ task setupChromeDriver << {
 
 task setupJscover << {
     ext {
-        root = 'tools/jscover/'
+        root = file('tools/jscover/')
         version = '0.3.0'
         artifact = "JSCover-$version"
-        src = "http://jaist.dl.sourceforge.net/project/jscover/JSCover-0.3.0.zip"
-        dest = file(root + '/archives')
-        zipfile = new File(dest.path, src.split('/')[-1])
-        target = new File(root, artifact)
+        src = "http://jaist.dl.sourceforge.net/project/jscover/${artifact}.zip"
+        archives = new File(root.path, '/archives')
+        zipfile = new File(archives.path, src.split('/')[-1])
+        target = new File(root.path, artifact)
     }
 
-    if(!dest.exists()) assert dest.mkdirs(), "mkdir failed [$dest]"
-    if(!zipfile.exists()) ant.get(src: src, dest: dest, verbose: true)
+    if(!archives.exists()) assert archives.mkdirs(), "mkdir failed [$archives]"
+
+    println "$name: download: $src"
+    if(!zipfile.exists()) ant.get(src: src, dest: archives, verbose: true)
     assert zipfile.exists(), "download failed [$src]"
 
     if(target.exists()) {
@@ -76,7 +79,7 @@ task setupJscover << {
     }.execute()
 }
 
-task setup(dependsOn: setupChromeDriver)
+task setup(dependsOn: [setupChromeDriver, setupJscover])
 
 stopPort = 8099
 stopKey = 'stopKey'
@@ -87,6 +90,8 @@ test {
 
         jettyRun.daemon = true
         jettyRun.execute()
+
+        if(!jscoverJar.exists()) setupJscover.execute()
         jscoverRun.execute()
     }
 
@@ -102,12 +107,11 @@ test {
 task jscoverRun << {
     // java -jar tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar -ws --proxy --port=9999 --report-dir=build/reports/jscover
     ext {
-        jar = 'tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar'
         reportDir = file('build/reports/jscover')
     }
 
     ant{
-        java(jar: jar, fork: true, spawn: true) {
+        java(jar: jscoverJar, fork: true, spawn: true) {
             arg(value: '-ws')
             arg(value: '--proxy')
             arg(value: "--port=$jscoverPort")
