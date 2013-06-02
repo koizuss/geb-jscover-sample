@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>geb-jscover-sample</title>
-    <script type="text/javascript">
-        var change = function (message) {
-            var target = document.getElementById('target');
-            target.innerHTML = message;
-        };
-    </script>
+    <script type="text/javascript" src="js/sample.js"></script>
 </head>
 <body>
+    <h3>geb-jscover-sample</h3>
     <div id="target"></div>
+    <input type="text" id="message">
+    <button onclick="change(document.getElementById('message').value)">change</button>
 </body>
 </html>

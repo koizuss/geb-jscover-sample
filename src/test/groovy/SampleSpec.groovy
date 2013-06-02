@@ -1,9 +1,10 @@
 import geb.spock.GebSpec
+import org.openqa.selenium.JavascriptExecutor
 
 class SampleSpec extends GebSpec {
 
     def setup() {
-        go 'http:localhost:8080/geb-jscover-sample/index.html'
+        go 'http://127.0.0.1/geb-jscover-sample/index.html'
     }
 
     def "初期表示"() {

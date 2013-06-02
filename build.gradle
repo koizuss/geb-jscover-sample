@@ -3,6 +3,7 @@ apply plugin: 'jetty'
 
 ext {
     chromeDriver = file('tools/chromedriver/chromedriver')
+    jscover = file('tools/jscover')
 }
 
 /**
@@ -25,7 +26,7 @@ dependencies {
                 "org.codehaus.geb:geb-junit4:$gebVersion",
                 "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
 
-    groovy 'org.codehaus.groovy:groovy-all:1.8.5'   // gebにあわせる
+    compile 'org.codehaus.groovy:groovy-all:1.8.5'   // gebにあわせる
 }
 
 task setupChromeDriver << {
@@ -42,6 +43,33 @@ task setupChromeDriver << {
     copy {
         from zipTree(zipfile)
         into chromeDriver.parent
+    }.execute()
+}
+
+task setupJscover << {
+    ext {
+        root = 'tools/jscover/'
+        version = '0.3.0'
+        artifact = "JSCover-$version"
+        src = "http://jaist.dl.sourceforge.net/project/jscover/JSCover-0.3.0.zip"
+        dest = file(root + '/archives')
+        zipfile = new File(dest.path, src.split('/')[-1])
+        target = new File(root, artifact)
+    }
+
+    if(!dest.exists()) assert dest.mkdirs(), "mkdir failed [$dest]"
+    if(!zipfile.exists()) ant.get(src: src, dest: dest, verbose: true)
+    assert zipfile.exists(), "download failed [$src]"
+
+    if(target.exists()) {
+        ant.delete(dir: target);
+    }
+
+    assert target.mkdirs(), "mkdir failed [$target]"
+
+    copy {
+        from zipTree(zipfile)
+        into target.path
     }.execute()
 }
 
