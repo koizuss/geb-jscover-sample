@@ -12,7 +12,7 @@ Geb SpecのカバレッジをJSCoverで取得してみる
 
 1. setup chromedriver
   <pre>
-  gradle setup
+  ./gradlew setup
   </pre>
 
 2. start jscover
@@ -22,8 +22,9 @@ Geb SpecのカバレッジをJSCoverで取得してみる
 
 3. start target web server
   <pre>
-  gradle jR
+  ./gradlew jR
   </pre>
+  - start *http://127.0.0.1:8080/geb-jscover-sample* on jetty server
 
 4. setting proxy
 
@@ -61,6 +62,5 @@ Geb SpecのカバレッジをJSCoverで取得してみる
     - --allow-file-access-from-files
 - geb上でjscover report出力
 - gebでテストした全てのカバレッジをまとめて出力
-- gradle wrapper
 - jscoverのセットアップをgradleで実行
 - jscoverの起動/停止をgradleで実行
