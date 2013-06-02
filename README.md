@@ -32,14 +32,13 @@ Geb SpecのカバレッジをJSCoverで取得してみる
     setting proxy on your browser: *http://localhost:9999*
 
 5. open target page
-
-    *open http://127.0.0.1:8080/geb-jscover-sample/index.html*
-
-    - *--allow-file-access-from-files* オプションが必要
+    1. *--allow-file-access-from-files* オプションが必要
         - Mac OS:
-        <pre>
+            <pre>
             /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --allow-file-access-from-files
-        </pre>
+            </pre>
+
+    2. *open http://127.0.0.1:8080/geb-jscover-sample/index.html*
 
 6. testing
     1. input *some message* on input box
