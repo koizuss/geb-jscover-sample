@@ -7,13 +7,14 @@ Geb SpecのカバレッジをJSCoverで取得してみる
 ## feature
 
 - JSCover(proxy mode)を使ってカバレッジ取得（gebはまだ使ってない...）
+    - 多分後はGebで起動するブラウザにproxy設定が出来ればOK
 
 ## setup & execute
 
-1. setup chromedriver
+<!-- 1. setup chromedriver
   <pre>
   ./gradlew setup
-  </pre>
+  </pre> -->
 
 2. start jscover
   <pre>
