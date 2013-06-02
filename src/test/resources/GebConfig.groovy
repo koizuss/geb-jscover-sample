@@ -6,25 +6,21 @@ import org.openqa.selenium.Proxy
 
 driver = {
     DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-    // Add the WebDriver proxy capability.
-    // Proxy proxy = new Proxy();
-    // proxy.setHttpProxy("localhost:9999");
-    // capabilities.setCapability("proxy", proxy)
 
-    // capabilities.setCapability("args",
-    //     Arrays.asList("--disable-web-security","--allow-file-access-from-files"))
+    // for chromedriver
+    // capabilities.setCapability("chrome.switches", [
+    //                            "--proxy-server=http://localhost:9999",
+    //                            "--allow-file-access-from-files"
+    //                            ]);
 
-    // Add ChromeDriver-specific capabilities through ChromeOptions.
-    // ChromeOptions options = new ChromeOptions()
-    // options.addArguments("--disable-web-security")
-    // options.addArguments("--allow-file-access-from-files")
-    // options.addArguments("--user-data-dir=" + new File('.').getAbsolutePath())
-    // capabilities.setCapability(ChromeOptions.CAPABILITY, options)
+    // for chromedriver2
+    Proxy proxy = new Proxy()
+    proxy.setHttpProxy("http://localhost:9999")
+    capabilities.setCapability("proxy", proxy)
 
-    capabilities.setCapability("chrome.switches", [
-                               "--proxy-server=http://localhost:9999",
-                               "--allow-file-access-from-files"
-                               ]);
+    ChromeOptions options = new ChromeOptions()
+    options.addArguments("--allow-file-access-from-files")
+    capabilities.setCapability(ChromeOptions.CAPABILITY, options)
 
     ChromeDriver driver = new ChromeDriver(capabilities);
 

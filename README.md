@@ -5,24 +5,15 @@ Geb Specで実行されるJavaScriptのカバレッジをJSCoverで取得して�
 - クライアントJavaScriptのテストにGebSpecを使った場合のカバレッジがとりたい
 - 一旦ブラウザはChromeのみ
 
-## setup & execute
+## usage
 
-1. setup chromedriver
-  <pre>
-  ./gradlew setup
-  </pre>
-
-2. start jscover
-  <pre>
-  java -jar tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar -ws --proxy --port=9999 --report-dir=build/reports/jscover
-  </pre>
-
-3. testing
+1. testing
   <pre>
   ./gradlew clean test
   </pre>
+  - download & setup chromedriver when first
 
-4. show coverage
+2. show coverage
   1. カバレッジを表示する為に *--allow-file-access-from-files* オプションが必要
     - Mac OS:
         <pre>
@@ -33,6 +24,5 @@ Geb Specで実行されるJavaScriptのカバレッジをJSCoverで取得して�
 
 ## TODO
 
-- gebでテストした全てのカバレッジをまとめて出力
-- jscoverのセットアップをgradleで実行
-- jscoverの起動/停止をgradleで実行
+- 複数テストの結果が集約出来るか確認
+- jscover setup on gradle

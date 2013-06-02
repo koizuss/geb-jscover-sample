@@ -3,7 +3,7 @@ apply plugin: 'jetty'
 
 ext {
     chromeDriver = file('tools/chromedriver/chromedriver')
-    jscover = file('tools/jscover')
+    jscoverPort = 9999
 }
 
 /**
@@ -31,13 +31,15 @@ dependencies {
 
 task setupChromeDriver << {
     ext {
-        // src = 'https://chromedriver.googlecode.com/files/chromedriver2_mac32_0.9.zip'
-        src = 'https://chromedriver.googlecode.com/files/chromedriver_mac_26.0.1383.0.zip'
+        // src = 'https://chromedriver.googlecode.com/files/chromedriver_mac_26.0.1383.0.zip'
+        src = 'https://chromedriver.googlecode.com/files/chromedriver2_mac32_0.9.zip'
         dest = file(chromeDriver.parent + '/archives')
         zipfile = new File(dest.path, src.split('/')[-1])
     }
 
     if(!dest.exists()) assert dest.mkdirs(), "mkdir failed [$dest]"
+
+    println "$name: download: $src"
     if(!zipfile.exists()) ant.get(src: src, dest: dest, verbose: true)
     assert zipfile.exists(), "download failed [$src]"
 
@@ -80,15 +82,54 @@ stopPort = 8099
 stopKey = 'stopKey'
 test {
     doFirst {
+        if(!chromeDriver.exists()) setupChromeDriver.execute()
         systemProperty 'webdriver.chrome.driver', chromeDriver
 
         jettyRun.daemon = true
         jettyRun.execute()
+        jscoverRun.execute()
     }
 
     doLast {
         jettyStop.execute()
+        jscoverStop.execute()
     }
+}
+
+/**
+ * @see http://tntim96.github.io/JSCover/manual/manual.xml
+ */
+task jscoverRun << {
+    // java -jar tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar -ws --proxy --port=9999 --report-dir=build/reports/jscover
+    ext {
+        jar = 'tools/jscover/JSCover-0.3.0/target/dist/JSCover-all.jar'
+        reportDir = file('build/reports/jscover')
+    }
+
+    ant{
+        java(jar: jar, fork: true, spawn: true) {
+            arg(value: '-ws')
+            arg(value: '--proxy')
+            arg(value: "--port=$jscoverPort")
+            arg(value: "--report-dir=$reportDir")
+        }
+        waitfor(maxwait: 5,
+                maxwaitunit: 'second',
+                checkevery: 250,
+                checkeveryunit: "millisecond",
+                timeoutproperty: "failed") {
+
+            http(url: "http://localhost:$jscoverPort/jscoverage.html")
+        }
+        fail(if: "failed")
+    }
+
+    println "start jscover server [http://localhost:$jscoverPort]"
+}
+
+task jscoverStop << {
+    ant.get(src: "http://localhost:$jscoverPort/stop", dest: "$buildDir/jscover-stop.txt")
+    println 'stop jscover server'
 }
 
 /**
