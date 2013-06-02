@@ -20,7 +20,7 @@ Geb Specで実行されるJavaScriptのカバレッジをJSCoverで取得して�
         /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --allow-file-access-from-files
         </pre>
 
-  2. *open ./report/jscoverage.html*
+  2. *open ./build/reports/jscoverage/jscoverage.html*
 
 ## TODO
 
