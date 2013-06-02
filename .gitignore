@@ -1,5 +1,5 @@
 .gradle/
 build/
-tools/chromedriver
+tools/
 report/
 *.log
