@@ -1,7 +1,8 @@
 # geb-jscover-sample
 
-Geb SpecのカバレッジをJSCoverで取得してみる
+Geb Specで実行されるJavaScriptのカバレッジをJSCoverで取得してみる
 
+- クライアントJavaScriptのテストにGebSpecを使った場合のカバレッジがとりたい
 - 一旦ブラウザはChromeのみ
 
 ## feature
