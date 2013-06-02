@@ -25,4 +25,4 @@ Geb Specで実行されるJavaScriptのカバレッジをJSCoverで取得して�
 ## TODO
 
 - 複数テストの結果が集約出来るか確認
-- jscover setup on gradle
+- setup jscover on gradle
